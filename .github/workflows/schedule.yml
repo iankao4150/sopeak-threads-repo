@@ -1,0 +1,19 @@
+name: SOPEAK Threads 每日自動發文
+on:
+  schedule:
+    - cron: "0 12 * * *"   # 每天 UTC 12:00 = 台灣 20:00 觸發，只發「今天該發的那篇」
+  workflow_dispatch: {}     # 也可到 Actions 分頁手動按一下測試
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: 發今天該發的那篇（--today：無狀態，不會重發舊的）
+        run: node publish-threads.mjs --today
+        env:
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          IMAGE_BASE_URL: ${{ secrets.IMAGE_BASE_URL }}

@@ -1,0 +1,5 @@
+.env
+.setup.env
+posted.json
+node_modules
+.DS_Store
